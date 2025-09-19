@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeBuilder - Full Stack Demo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#4f46e5',
+                        dark: '#1e293b',
+                        light: '#f8fafc'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .form-section {
+            transition: all 0.3s ease;
+        }
+        .resume-preview {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-height: 500px;
+            background: linear-gradient(to bottom, #ffffff, #f8fafc);
+        }
+        .skill-tag {
+            display: inline-block;
+            background-color: #e0e7ff;
+            color: #3730a3;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin: 4px;
+            font-size: 14px;
+        }
+        .dashboard-card {
+            transition: all 0.3s ease;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        #loginSection, #signupSection, #dashboardSection, #resumeBuilderSection {
+            transition: opacity 0.5s ease;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-file-alt text-primary text-2xl"></i>
+                        <span class="ml-2 text-xl font-bold text-dark">ResumeBuilder</span>
+                    </div>
+                    <div class="hidden md:ml-6 md:flex md:space-x-4">
+                        <a href="#" class="nav-link text-dark px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100" data-section="dashboardSection">Dashboard</a>
+                        <a href="#" class="nav-link text-dark px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100" data-section="resumeBuilderSection">Builder</a>
+                        <a href="#" class="text-dark px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100">Templates</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="hidden md:flex items-center mr-4 user-info">
+                        <img class="h-8 w-8 rounded-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'%3E%3Cpath d='M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-6.627 0-12 5.373-12 12h24c0-6.627-5.373-12-12-12z'/%3E%3C/svg%3E" alt="User">
+                        <span class="ml-2 text-dark text-sm user-email"></span>
+                    </div>
+                    <button class="bg-primary text-white px-4 py-2 rounded-md font-medium hover:bg-secondary transition hidden" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </button>
+                    <button class="bg-gray-200 text-dark px-4 py-2 rounded-md font-medium hover:bg-gray-300 transition hidden" id="loginBtn">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 fade-in" id="loginSection">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Login Form -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-dark mb-6">Login to Your Account</h2>
+                <form id="loginForm">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2" for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter your email" value="hire-me@anshumat.org">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2" for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter your password"value="HireMe@2025!">
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="remember" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                            <label for="remember" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                        </div>
+                        <a href="#" class="text-sm text-primary hover:underline">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition font-medium">
+                        Login
+                    </button>
+                </form>
+                <div class="mt-4 text-center">
+                    <p class="text-gray-600">Don't have an account? <a href="#" class="text-primary hover:underline switch-section" data-section="signupSection">Sign up</a></p>
+                </div>
+            </div>
+
+            <!-- Hero Content -->
+            <div class="flex flex-col justify-center">
+                <h1 class="text-4xl font-bold text-dark mb-4">Create Professional Resumes in Minutes</h1>
+                <p class="text-xl text-gray-600 mb-8">Build, customize, and download your resume with our easy-to-use platform. Impress employers with a professionally designed resume.</p>
+                <ul class="space-y-4">
+                    <li class="flex items-center">
+                        <i class="fas fa-check-circle text-green-500 text-xl mr-3"></i>
+                        <span class="text-gray-700">Multiple professional templates</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check-circle text-green-500 text-xl mr-3"></i>
+                        <span class="text-gray-700">Easy-to-use resume builder</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check-circle text-green-500 text-xl mr-3"></i>
+                        <span class="text-gray-700">Download as PDF with one click</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check-circle text-green-500 text-xl mr-3"></i>
+                        <span class="text-gray-700">Save multiple versions of your resume</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 hidden" id="signupSection">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Signup Form -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-dark mb-6">Create Your Account</h2>
+                <form id="signupForm">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2" for="firstName">First Name</label>
+                            <input type="text" id="firstName" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="John">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2" for="lastName">Last Name</label>
+                            <input type="text" id="lastName" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Doe">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2" for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter your email">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2" for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Create a password">
+                        <p class="text-sm text-gray-500 mt-1">Must be at least 8 characters</p>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 mb-2" for="confirmPassword">Confirm Password</label>
+                        <input type="" id="confirmPassword" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Confirm your password">
+                    </div>
+                    <div class="flex items-center mb-4">
+                        <input type="checkbox" id="terms" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                        <label for="terms" class="ml-2 block text-sm text-gray-700">I agree to the <a href="#" class="text-primary hover:underline">Terms of Service</a> and <a href="#" class="text-primary hover:underline">Privacy Policy</a></label>
+                    </div>
+                    <button type="submit" class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-secondary transition font-medium">
+                        Create Account
+                    </button>
+                </form>
+                <div class="mt-4 text-center">
+                    <p class="text-gray-600">Already have an account? <a href="#" class="text-primary hover:underline switch-section" data-section="loginSection">Login</a></p>
+                </div>
+            </div>
+
+            <!-- Benefits Content -->
+            <div class="flex flex-col justify-center">
+                <h1 class="text-4xl font-bold text-dark mb-4">Why Create an Account?</h1>
+                <p class="text-xl text-gray-600 mb-8">Join thousands of users who have landed their dream jobs with our professional resume builder.</p>
+                <ul class="space-y-4">
+                    <li class="flex items-center">
+                        <i class="fas fa-cloud text-blue-500 text-xl mr-3"></i>
+                        <span class="text-gray-700">Save and access your resumes from anywhere</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-copy text-purple-500 text-xl mr-3"></i>
+                        <span class="text-gray-700">Create multiple resume versions</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-history text-green-500 text-xl mr-3"></i>
+                        <span class="text-gray-700">Track your application history</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-bell text-yellow-500 text-xl mr-3"></i>
+                        <span class="text-gray-700">Get notified about new templates and features</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 hidden" id="dashboardSection">
+        <h1 class="text-3xl font-bold text-dark mb-8">Dashboard</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="dashboard-card bg-white rounded-lg shadow-md p-6 border-l-4 border-primary">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 text-primary">
+                        <i class="fas fa-file-alt text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h2 class="text-lg font-semibold text-dark">Resumes Created</h2>
+                        <p class="text-2xl font-bold" id="resumeCount">3</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-500">
+                        <i class="fas fa-check-circle text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h2 class="text-lg font-semibold text-dark">Completed Profiles</h2>
+                        <p class="text-2xl font-bold">1</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-purple-100 text-purple-500">
+                        <i class="fas fa-download text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h2 class="text-lg font-semibold text-dark">Downloads</h2>
+                        <p class="text-2xl font-bold">5</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-dark">My Resumes</h2>
+                <button class="bg-primary text-white px-4 py-2 rounded-md font-medium hover:bg-secondary transition" id="createNewBtn">
+                    <i class="fas fa-plus mr-2"></i>Create New
+                </button>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="resumesList">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10 text-primary">
+                                        <i class="fas fa-file-alt text-2xl"></i>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Software Developer Resume</div>
+                                        <div class="text-sm text-gray-500">Default Template</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2 hours ago</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Complete</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="#" class="text-primary hover:text-secondary mr-3 edit-resume" data-id="1">Edit</a>
+                                <a href="#" class="text-primary hover:text-secondary mr-3 download-resume" data-id="1">Download</a>
+                                <a href="#" class="text-red-600 hover:text-red-900 delete-resume" data-id="1">Delete</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10 text-primary">
+                                        <i class="fas fa-file-alt text-2xl"></i>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Data Scientist Resume</div>
+                                        <div class="text-sm text-gray-500">Modern Template</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1 day ago</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Draft</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="#" class="text-primary hover:text-secondary mr-3 edit-resume" data-id="2">Edit</a>
+                                <a href="#" class="text-primary hover:text-secondary mr-3 download-resume" data-id="2">Download</a>
+                                <a href="#" class="text-red-600 hover:text-red-900 delete-resume" data-id="2">Delete</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10 text-primary">
+                                        <i class="fas fa-file-alt text-2xl"></i>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">UX Designer Resume</div>
+                                        <div class="text-sm text-gray-500">Creative Template</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3 days ago</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">In Progress</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="#" class="text-primary hover:text-secondary mr-3 edit-resume" data-id="3">Edit</a>
+                                <a href="#" class="text-primary hover:text-secondary mr-3 download-resume" data-id="3">Download</a>
+                                <a href="#" class="text-red-600 hover:text-red-900 delete-resume" data-id="3">Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resume Builder Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 hidden" id="resumeBuilderSection">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-dark">Resume Builder</h1>
+            <div>
+                <button class="bg-gray-200 text-dark px-4 py-2 rounded-md font-medium hover:bg-gray-300 transition mr-2" id="saveDraftBtn">
+                    <i class="fas fa-save mr-2"></i>Save Draft
+                </button>
+                <button class="bg-primary text-white px-4 py-2 rounded-md font-medium hover:bg-secondary transition" id="downloadPdfBtn">
+                    <i class="fas fa-download mr-2"></i>Download PDF
+                </button>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left sidebar - Form navigation -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-lg font-bold text-dark mb-4">Resume Sections</h2>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-primary font-medium flex items-center py-2 section-tab active" data-tab="personal"><i class="fas fa-user mr-3"></i> Personal Information</a></li>
+                        <li><a href="#" class="text-dark hover:text-primary flex items-center py-2 section-tab" data-tab="education"><i class="fas fa-graduation-cap mr-3"></i> Education</a></li>
+                        <li><a href="#" class="text-dark hover:text-primary flex items-center py-2 section-tab" data-tab="experience"><i class="fas fa-briefcase mr-3"></i> Experience</a></li>
+                        <li><a href="#" class="text-dark hover:text-primary flex items-center py-2 section-tab" data-tab="skills"><i class="fas fa-star mr-3"></i> Skills</a></li>
+                        <li><a href="#" class="text-dark hover:text-primary flex items-center py-2 section-tab" data-tab="projects"><i class="fas fa-tasks mr-3"></i> Projects</a></li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-lg font-bold text-dark mb-4">Templates</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="border-2 border-primary rounded-lg overflow-hidden cursor-pointer template-select" data-template="professional">
+                            <div class="h-24 bg-gradient-to-r from-primary to-secondary"></div>
+                            <p class="text-center py-2 text-sm font-medium">Professional</p>
+                        </div>
+                        <div class="border-2 border-gray-200 rounded-lg overflow-hidden cursor-pointer template-select" data-template="modern">
+                            <div class="h-24 bg-gradient-to-r from-gray-400 to-gray-600"></div>
+                            <p class="text-center py-2 text-sm font-medium">Modern</p>
+                        </div>
+                        <div class="border-2 border-gray-200 rounded-lg overflow-hidden cursor-pointer template-select" data-template="creative">
+                            <div class="h-24 bg-gradient-to-r from-green-400 to-green-600"></div>
+                            <p class="text-center py-2 text-sm font-medium">Creative</p>
+                        </div>
+                        <div class="border-2 border-gray-200 rounded-lg overflow-hidden cursor-pointer template-select" data-template="elegant">
+                            <div class="h-24 bg-gradient-to-r from-purple-400 to-purple-600"></div>
+                            <p class="text-center py-2 text-sm font-medium">Elegant</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Middle section - Forms -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <!-- Personal Information Form -->
+                    <div class="tab-content active" id="personal-tab">
+                        <h2 class="text-xl font-bold text-dark mb-6">Personal Information</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-gray-700 mb-2" for="fullName">Full Name</label>
+                                <input type="text" id="fullName" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="John Doe">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2" for="emailResume">Email</label>
+                                <input type="email" id="emailResume" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="john.doe@example.com">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2" for="phone">Phone</label>
+                                <input type="tel" id="phone" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="(123) 456-7890">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2" for="location">Location</label>
+                                <input type="text" id="location" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="City, Country">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2" for="linkedin">LinkedIn</label>
+                                <input type="url" id="linkedin" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="https://linkedin.com/in/username">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2" for="website">Website</label>
+                                <input type="url" id="website" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="https://yourwebsite.com">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label class="block text-gray-700 mb-2" for="summary">Professional Summary</label>
+                            <textarea id="summary" rows="3" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Briefly describe your professional background and goals..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Education Form -->
+                    <div class="tab-content" id="education-tab">
+                        <h2 class="text-xl font-bold text-dark mb-6">Education</h2>
+                        <div class="mb-6">
+                            <div class="grid grid-cols-1 gap-4">
+                                <div>
+                                    <label class="block text-gray-700 mb-2" for="school">School/University</label>
+                                    <input type="text" id="school" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="University of Example">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-gray-700 mb-2" for="degree">Degree</label>
+                                        <input type="text" id="degree" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Bachelor of Science">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 mb-2" for="field">Field of Study</label>
+                                        <input type="text" id="field" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Computer Science">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-gray-700 mb-2" for="startDate">Start Date</label>
+                                        <input type="month" id="startDate" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 mb-2" for="endDate">End Date</label>
+                                        <input type="month" id="endDate" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 mb-2" for="educationDescription">Description</label>
+                                    <textarea id="educationDescription" rows="3" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Relevant courses, achievements, activities..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="bg-gray-200 text-dark px-4 py-2 rounded-md font-medium hover:bg-gray-300 transition" id="addEducationBtn">
+                            <i class="fas fa-plus mr-2"></i>Add Another Education
+                        </button>
+                    </div>
+                    
+                    <!-- Experience Form -->
+                    <div class="tab-content" id="experience-tab">
+                        <h2 class="text-xl font-bold text-dark mb-6">Work Experience</h2>
+                        <div class="mb-6">
+                            <div class="grid grid-cols-1 gap-4">
+                                <div>
+                                    <label class="block text-gray-700 mb-2" for="company">Company</label>
+                                    <input type="text" id="company" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Example Corp">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 mb-2" for="position">Position</label>
+                                    <input type="text" id="position" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Software Developer">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-gray-700 mb-2" for="jobStartDate">Start Date</label>
+                                        <input type="month" id="jobStartDate" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 mb-2" for="jobEndDate">End Date</label>
+                                        <input type="month" id="jobEndDate" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 mb-2" for="jobDescription">Description</label>
+                                    <textarea id="jobDescription" rows="3" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Describe your responsibilities and achievements..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="bg-gray-200 text-dark px-4 py-2 rounded-md font-medium hover:bg-gray-300 transition" id="addExperienceBtn">
+                            <i class="fas fa-plus mr-2"></i>Add Another Experience
+                        </button>
+                    </div>
+                    
+                    <!-- Skills Form -->
+                    <div class="tab-content" id="skills-tab">
+                        <h2 class="text-xl font-bold text-dark mb-6">Skills</h2>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 mb-2" for="skills">Add Skills (comma separated)</label>
+                            <input type="text" id="skills" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="JavaScript, React, Node.js, Python">
+                            <p class="text-sm text-gray-500 mt-1">Enter your skills separated by commas</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-medium text-dark mb-4">Proficiency Levels</h3>
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-sm font-medium">JavaScript</span>
+                                    <span class="text-sm text-gray-500">Expert</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-primary h-2.5 rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-sm font-medium">React</span>
+                                    <span class="text-sm text-gray-500">Advanced</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-primary h-2.5 rounded-full" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-sm font-medium">Node.js</span>
+                                    <span class="text-sm text-gray-500">Intermediate</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-primary h-2.5 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Projects Form -->
+                    <div class="tab-content" id="projects-tab">
+                        <h2 class="text-xl font-bold text-dark mb-6">Projects</h2>
+                        <div class="mb-6">
+                            <div class="grid grid-cols-1 gap-4">
+                                <div>
+                                    <label class="block text-gray-700 mb-2" for="projectName">Project Name</label>
+                                    <input type="text" id="projectName" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="E-commerce Website">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 mb-2" for="projectLink">Project Link (optional)</label>
+                                    <input type="url" id="projectLink" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="https://example.com">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 mb-2" for="projectDescription">Description</label>
+                                    <textarea id="projectDescription" rows="3" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Describe the project, your role, technologies used..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="bg-gray-200 text-dark px-4 py-2 rounded-md font-medium hover:bg-gray-300 transition" id="addProjectBtn">
+                            <i class="fas fa-plus mr-2"></i>Add Another Project
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Navigation buttons -->
+                <div class="flex justify-between">
+                    <button class="bg-gray-200 text-dark px-4 py-2 rounded-md font-medium hover:bg-gray-300 transition" id="prevBtn">
+                        <i class="fas fa-arrow-left mr-2"></i>Previous
+                    </button>
+                    <button class="bg-primary text-white px-4 py-2 rounded-md font-medium hover:bg-secondary transition" id="nextBtn">
+                        Next<i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center">
+                        <i class="fas fa-file-alt text-primary text-2xl"></i>
+                        <span class="ml-2 text-xl font-bold">ResumeBuilder</span>
+                    </div>
+                    <p class="mt-2 text-gray-400">Create professional resumes in minutes</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="https://www.linkedin.com/in/shivaprasad-benakalmath-824a45303" class="text-gray-400 hover:text-white transition"><i class="fab fa-linkedin fa-lg"></i></a>
+                    <a href="https://github.com/shivaprasadbenakalmath8-create" class="text-gray-400 hover:text-white transition"><i class="fab fa-github fa-lg"></i></a>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-gray-400 text-sm">
+                <p>© 2025 ResumeBuilder. All rights reserved to SHIVAPRASAD</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const loginSection = document.getElementById('loginSection');
+        const signupSection = document.getElementById('signupSection');
+        const dashboardSection = document.getElementById('dashboardSection');
+        const resumeBuilderSection = document.getElementById('resumeBuilderSection');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loginBtn = document.getElementById('loginBtn');
+        const createNewBtn = document.getElementById('createNewBtn');
+        const sectionTabs = document.querySelectorAll('.section-tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const saveDraftBtn = document.getElementById('saveDraftBtn');
+        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+        const resumesList = document.getElementById('resumesList');
+        const resumeCount = document.getElementById('resumeCount');
+        const userInfo = document.querySelector('.user-info');
+        const userEmail = document.querySelector('.user-email');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const switchSectionLinks = document.querySelectorAll('.switch-section');
+        const templateSelects = document.querySelectorAll('.template-select');
+        
+        // Demo data
+        let resumes = [
+            { id: 1, name: "Software Developer Resume", template: "Default Template", updated: "2 hours ago", status: "Complete" },
+            { id: 2, name: "Data Scientist Resume", template: "Modern Template", updated: "1 day ago", status: "Draft" },
+            { id: 3, name: "UX Designer Resume", template: "Creative Template", updated: "3 days ago", status: "In Progress" }
+        ];
+        
+        let currentUser = null;
+        let currentTemplate = "professional";
+        let currentResumeId = null;
+        
+        // Initialize the application
+        function initApp() {
+            // Check if user is logged in (from localStorage)
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showDashboard();
+            } else {
+                showLogin();
+            }
+            
+            // Load resumes from localStorage if available
+            const savedResumes = localStorage.getItem('resumes');
+            if (savedResumes) {
+                resumes = JSON.parse(savedResumes);
+                renderResumes();
+            }
+        }
+        
+        // Show a specific section and hide others
+        function showSection(sectionId) {
+            // Hide all sections
+            loginSection.style.display = 'none';
+            signupSection.style.display = 'none';
+            dashboardSection.style.display = 'none';
+            resumeBuilderSection.style.display = 'none';
+            
+            // Show the requested section
+            document.getElementById(sectionId).style.display = 'block';
+            
+            // Update UI based on authentication state
+            if (currentUser) {
+                logoutBtn.classList.remove('hidden');
+                loginBtn.classList.add('hidden');
+                userInfo.classList.remove('hidden');
+                userEmail.textContent = currentUser.email;
+            } else {
+                logoutBtn.classList.add('hidden');
+                loginBtn.classList.remove('hidden');
+                userInfo.classList.add('hidden');
+            }
+        }
+        
+        // Show login section
+        function showLogin() {
+            showSection('loginSection');
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+        }
+        
+        // Show signup section
+        function showSignup() {
+            showSection('signupSection');
+        }
+        
+        // Show dashboard section
+        function showDashboard() {
+            showSection('dashboardSection');
+            renderResumes();
+        }
+        
+        // Show resume builder section
+        function showResumeBuilder(editId = null) {
+            showSection('resumeBuilderSection');
+            currentResumeId = editId;
+            
+            // If editing, load the resume data
+            if (editId) {
+                const resume = resumes.find(r => r.id === editId);
+                if (resume) {
+                    document.getElementById('fullName').value = "John Doe";
+                    document.getElementById('emailResume').value = "john.doe@example.com";
+                    document.getElementById('phone').value = "(123) 456-7890";
+                    document.getElementById('location').value = "New York, USA";
+                    // In a real app, we would load all the data from the resume object
+                }
+            } else {
+                // Clear form for new resume
+                document.getElementById('fullName').value = "";
+                document.getElementById('emailResume').value = "";
+                document.getElementById('phone').value = "";
+                document.getElementById('location').value = "";
+                document.getElementById('linkedin').value = "";
+                document.getElementById('website').value = "";
+                document.getElementById('summary').value = "";
+            }
+            
+            // Start with the first tab
+            showTab(0);
+        }
+        
+        // Render resumes in the dashboard
+        function renderResumes() {
+            let html = '';
+            resumes.forEach(resume => {
+                let statusClass = '';
+                let statusText = '';
+                
+                if (resume.status === 'Complete') {
+                    statusClass = 'bg-green-100 text-green-800';
+                    statusText = 'Complete';
+                } else if (resume.status === 'Draft') {
+                    statusClass = 'bg-yellow-100 text-yellow-800';
+                    statusText = 'Draft';
+                } else {
+                    statusClass = 'bg-blue-100 text-blue-800';
+                    statusText = 'In Progress';
+                }
+                
+                html += `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 text-primary">
+                                    <i class="fas fa-file-alt text-2xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">${resume.name}</div>
+                                    <div class="text-sm text-gray-500">${resume.template}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${resume.updated}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">${statusText}</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="#" class="text-primary hover:text-secondary mr-3 edit-resume" data-id="${resume.id}">Edit</a>
+                            <a href="#" class="text-primary hover:text-secondary mr-3 download-resume" data-id="${resume.id}">Download</a>
+                            <a href="#" class="text-red-600 hover:text-red-900 delete-resume" data-id="${resume.id}">Delete</a>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            resumesList.innerHTML = html;
+            resumeCount.textContent = resumes.length;
+            
+            // Add event listeners to the action buttons
+            document.querySelectorAll('.edit-resume').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const resumeId = parseInt(this.getAttribute('data-id'));
+                    showResumeBuilder(resumeId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-resume').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const resumeId = parseInt(this.getAttribute('data-id'));
+                    deleteResume(resumeId);
+                });
+            });
+            
+            document.querySelectorAll('.download-resume').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const resumeId = parseInt(this.getAttribute('data-id'));
+                    downloadResume(resumeId);
+                });
+            });
+        }
+        
+        // Delete a resume
+        function deleteResume(id) {
+            if (confirm('Are you sure you want to delete this resume?')) {
+                resumes = resumes.filter(resume => resume.id !== id);
+                localStorage.setItem('resumes', JSON.stringify(resumes));
+                renderResumes();
+            }
+        }
+        
+        // Download a resume (simulated)
+        function downloadResume(id) {
+            alert(`Downloading resume #${id}. In a real application, this would generate a PDF.`);
+        }
+        
+        // Form navigation (next/previous)
+        const tabs = ['personal', 'education', 'experience', 'skills', 'projects'];
+        let currentTab = 0;
+        
+        function showTab(index) {
+            // Hide all tabs
+            tabContents.forEach(content => content.classList.remove('active'));
+            sectionTabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(`${tabs[index]}-tab`).classList.add('active');
+            document.querySelector(`.section-tab[data-tab="${tabs[index]}"]`).classList.add('active');
+            
+            // Update navigation buttons
+            prevBtn.style.visibility = index === 0 ? 'hidden' : 'visible';
+            nextBtn.innerHTML = index === tabs.length - 1 ? 'Finish <i class="fas fa-check ml-2"></i>' : 'Next <i class="fas fa-arrow-right ml-2"></i>';
+            
+            currentTab = index;
+        }
+        
+        // Save resume data
+        function saveResumeData() {
+            // In a real app, this would save to a backend
+            alert('Resume saved successfully!');
+            
+            // For demo purposes, add a new resume to the list
+            if (!currentResumeId) {
+                const newResume = {
+                    id: resumes.length > 0 ? Math.max(...resumes.map(r => r.id)) + 1 : 1,
+                    name: document.getElementById('fullName').value || 'Untitled Resume',
+                    template: currentTemplate + ' Template',
+                    updated: 'Just now',
+                    status: 'Draft'
+                };
+                
+                resumes.push(newResume);
+                localStorage.setItem('resumes', JSON.stringify(resumes));
+                renderResumes();
+            }
+            
+            showDashboard();
+        }
+        
+        // Event Listeners
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Demo login validation
+            if (email === 'loginEmail' && password === 'HireMe@2025!') {
+                currentUser = { email: email, name: 'Demo User' };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                showDashboard();
+            } else {
+                alert('Invalid credentials. Use:\nEmail0');
+            }
+        });
+        
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            if (!document.getElementById('terms').checked) {
+                alert('You must agree to the Terms of Service and Privacy Policy');
+                return;
+            }
+            
+            // Simulate signup
+            currentUser = { 
+                email: email, 
+                name: `${firstName} ${lastName}` 
+            };
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            alert('Account created successfully!');
+            showDashboard();
+        });
+        
+        logoutBtn.addEventListener('click', function() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            showLogin();
+        });
+        
+        loginBtn.addEventListener('click', function() {
+            showLogin();
+        });
+        
+        createNewBtn.addEventListener('click', function() {
+            showResumeBuilder();
+        });
+        
+        // Tab navigation
+        sectionTabs.forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tabId = this.getAttribute('data-tab');
+                const tabIndex = tabs.indexOf(tabId);
+                showTab(tabIndex);
+            });
+        });
+        
+        nextBtn.addEventListener('click', function() {
+            if (currentTab < tabs.length - 1) {
+                showTab(currentTab + 1);
+            } else {
+                saveResumeData();
+            }
+        });
+        
+        prevBtn.addEventListener('click', function() {
+            if (currentTab > 0) {
+                showTab(currentTab - 1);
+            }
+        });
+        
+        saveDraftBtn.addEventListener('click', function() {
+            saveResumeData();
+        });
+        
+        downloadPdfBtn.addEventListener('click', function() {
+            alert('In a real application, this would generate and download a PDF file.');
+        });
+        
+        // Navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('data-section');
+                if (currentUser) {
+                    showSection(sectionId);
+                } else {
+                    showLogin();
+                }
+            });
+        });
+        
+        // Switch between login and signup
+        switchSectionLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('data-section');
+                showSection(sectionId);
+            });
+        });
+        
+        // Template selection
+        templateSelects.forEach(template => {
+            template.addEventListener('click', function() {
+                templateSelects.forEach(t => {
+                    t.classList.remove('border-primary');
+                    t.classList.add('border-gray-200');
+                });
+                this.classList.remove('border-gray-200');
+                this.classList.add('border-primary');
+                currentTemplate = this.getAttribute('data-template');
+            });
+        });
+        
+        // Initialize the application
+        initApp();
+    </script>
+</body>
+</html>
