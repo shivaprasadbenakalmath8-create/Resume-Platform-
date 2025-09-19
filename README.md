@@ -1,6 +1,15 @@
 # Resume-Platform-
 
 
+## Screenshots of Resume Platform 
+
+![Image](https://github.com/user-attachments/assets/15a82e9f-0017-4666-95ba-e391ca9b2d67)
+
+![Image](https://github.com/user-attachments/assets/86389787-aa52-4ed2-a2e3-90bbd2504ce4)
+
+![Image](https://github.com/user-attachments/assets/123ed323-884f-4fd6-b46c-a3805f374bca)
+
+![Image](https://github.com/user-attachments/assets/05f78135-f4d1-44ea-8451-97e8b78063db)
 
 ## Key Features Implemented
 
